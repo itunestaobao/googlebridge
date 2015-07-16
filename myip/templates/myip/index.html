@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset=UTF-8" />
+<meta name="robots" content="all"/>
+<meta name="description" content="What is my IP Address shown inside! See what &quot;My IP&quot; is with our tools and locator, trace an address to location and find out what it is. Lookup yours!"/>
+<meta name="keywords" content="whatismyip,whatsmyip,what is my IP,my IP address,my IP proxy"/>
+<title>What's My IP Address? What Is My IP Address Lookup</title>
+<style type="text/css">
+<!--
+.STYLE1 {
+	font-size: 36px;
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+}
+-->
+</style>
+</head>
+
+<body>
+<p>&nbsp;</p>
+
+<div align="center" class="STYLE1"><script type="text/javascript" language="javascript">
+
+function GetLocalIPAddress()
+{
+    var obj = null;
+    var rslt = "";
+    try
+    {
+        obj = new ActiveXObject("rcbdyctl.Setting");
+        rslt = obj.GetIPAddress;
+        obj = null;
+    }
+    catch(e)
+    {
+        
+    }
+
+    return rslt;
+}
+
+document.write("Your IP:" + GetLocalIPAddress());
+
+</script></div>
+</body>
+</html>

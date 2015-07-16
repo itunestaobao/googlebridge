@@ -1,0 +1,25 @@
+
+<html>
+<head>
+
+
+</head>
+<body>
+<form action="." method="get">
+        <input type="text" name="q">
+        <input type="submit" value="Search">
+    </form>
+
+<li class="g"><h3 class="r"><a href="{{link0}}">{% autoescape off %}{{title0}}{% endautoescape %}</h3><div class="s"><div class="kv" style="margin-bottom:2px"><cite><a>{% autoescape off %}{{link0}}{% endautoescape %}</cite></div>{% autoescape off %}{{content0}}{% endautoescape %}<br/></div></li>
+<li class="g"><h3 class="r"><a href="{{link1}}">{% autoescape off %}{{title1}}{% endautoescape %}</h3><div class="s"><div class="kv" style="margin-bottom:2px"><cite><a>{% autoescape off %}{{link1}}{% endautoescape %}</cite></div>{% autoescape off %}{{content1}}{% endautoescape %}<br/></div></li>
+<li class="g"><h3 class="r"><a href="{{link2}}">{% autoescape off %}{{title2}}{% endautoescape %}</h3><div class="s"><div class="kv" style="margin-bottom:2px"><cite><a>{% autoescape off %}{{link2}}{% endautoescape %}</cite></div>{% autoescape off %}{{content2}}{% endautoescape %}<br/></div></li>
+<li class="g"><h3 class="r"><a href="{{link3}}">{% autoescape off %}{{title3}}{% endautoescape %}</h3><div class="s"><div class="kv" style="margin-bottom:2px"><cite><a>{% autoescape off %}{{link3}}{% endautoescape %}</cite></div>{% autoescape off %}{{content3}}{% endautoescape %}<br/></div></li>
+<li class="g"><h3 class="r"><a href="{{link4}}">{% autoescape off %}{{title4}}{% endautoescape %}</h3><div class="s"><div class="kv" style="margin-bottom:2px"><cite><a>{% autoescape off %}{{link4}}{% endautoescape %}</cite></div>{% autoescape off %}{{content4}}{% endautoescape %}<br/></div></li>
+<li class="g"><h3 class="r"><a href="{{link5}}">{% autoescape off %}{{title5}}{% endautoescape %}</h3><div class="s"><div class="kv" style="margin-bottom:2px"><cite><a>{% autoescape off %}{{link5}}{% endautoescape %}</cite></div>{% autoescape off %}{{content5}}{% endautoescape %}<br/></div></li>
+<li class="g"><h3 class="r"><a href="{{link6}}">{% autoescape off %}{{title6}}{% endautoescape %}</h3><div class="s"><div class="kv" style="margin-bottom:2px"><cite><a>{% autoescape off %}{{link6}}{% endautoescape %}</cite></div>{% autoescape off %}{{content6}}{% endautoescape %}<br/></div></li>
+<li class="g"><h3 class="r"><a href="{{link7}}">{% autoescape off %}{{title7}}{% endautoescape %}</h3><div class="s"><div class="kv" style="margin-bottom:2px"><cite><a>{% autoescape off %}{{link7}}{% endautoescape %}</cite></div>{% autoescape off %}{{content7}}{% endautoescape %}<br/></div></li>
+<li class="g"><h3 class="r"><a href="{{link8}}">{% autoescape off %}{{title8}}{% endautoescape %}</h3><div class="s"><div class="kv" style="margin-bottom:2px"><cite><a>{% autoescape off %}{{link8}}{% endautoescape %}</cite></div>{% autoescape off %}{{content8}}{% endautoescape %}<br/></div></li>
+<li class="g"><h3 class="r"><a href="{{link9}}">{% autoescape off %}{{title9}}{% endautoescape %}</h3><div class="s"><div class="kv" style="margin-bottom:2px"><cite><a>{% autoescape off %}{{link9}}{% endautoescape %}</cite></div>{% autoescape off %}{{content9}}{% 
+</body>
+</html>
+
