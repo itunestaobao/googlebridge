@@ -30,7 +30,7 @@ def index(request):
                 #url_match1 = re.split(r'%',url_match[0])
                 url_search=re.split(r'=', url_match[0])
                 myurl = url_search[1]
-                urllist[k]=quote(myurl)
+                urllist[k]=myurl
                 title=re.split(r'">',str(link))
                 title1=re.split(r'</h3>',str(title[2]))
                 titlelist[k] = title1[0]

@@ -26,9 +26,9 @@ def index(request):
         if soup1_li:
             for link in soup1.find_all('h3'):
                 title_link=link.next.get('href')
-                url_match = re.split(r'&sa',title_link)
+                url_match = re.split(r'&sa',title_link)#切割&sa
                 #url_match1 = re.split(r'%',url_match[0])
-                url_search=re.split(r'=', url_match[0])
+                url_search=re.split(r'=', url_match[0])#去除等号之前的内容
                 myurl = url_search[1]
                 urllist[k]=myurl
                 title=re.split(r'">',str(link))
