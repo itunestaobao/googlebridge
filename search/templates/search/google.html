@@ -1,112 +1,38 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
 <meta charset="utf-8" />
 <title>Googlebridge</title>
-<link rel="shortcut icon" type="image/x-icon" href="http://www.google.com/images/google_favicon_128.png"/>
-<link rel="stylesheet" media="all" href="http://js.ui-portal.de/search-int/42.0.0/mailcom/search-home.css"/>
 <style type="text/css">
-<!--
-.STYLE1 {
-	color: #0066CC;
-	font-weight: bold;
-}
-.STYLE2 {font-size: 9px}
-.STYLE5 {font-size: 16px}
--->
+        body{color:#BFFEE3;background:#FEFEFE;padding:0 5em;margin:0}
+        h2{padding:2em 1em;background:#FFFFFF}
+        h3{color:#0066CC;margin:1em 0}
+        h4{color:#000000;margin:1em 0}
+        p{color:#000000;margin:1em 0}
 </style>
 </head>
-
 <body>
-
+<div align="center">
 <form action="." method="get">
-<p><span class="STYLE1">GoogleBridge</span> 
-  <input name="q" type="text" size="40">
-        <input type="hidden" name="start">
-        <input type="submit" value="Search">
-</p>
-
+<h3>GoogleBridge</h3> 
+  <input name="q" type="text" size="50" value="{{keyword}}">
+  <input type="hidden" name="start">
+  <input type="submit" value="Search">
 </form>
-
-
-<div class="searchResults" id="searchResults">
-</br>
- <ul>
-  <li>
-    <h3><a target="_blank" href="{{link0}}">{% autoescape off %}{{title0}}{% endautoescape %}</h3>
-             
-    <p class="url"><a>{% autoescape off %}{{link0}}{% endautoescape %}</p>
-    <p>{% autoescape off %}{{content0}}{% endautoescape %}</p> 
-  </li>
-  </br>
-  <li>
-    <h3><a target="_blank" href="{{link1}}">{% autoescape off %}{{title1}}{% endautoescape %}</h3>
-             
-    <p class="url"><a>{% autoescape off %}{{link1}}{% endautoescape %}</p>
-    <p>{% autoescape off %}{{content1}}{% endautoescape %}</p> 
-  </li>
-  </br>
-  <li>
-    <h3><a target="_blank" href="{{link2}}">{% autoescape off %}{{title2}}{% endautoescape %}</h3>
-             
-    <p class="url"><a>{% autoescape off %}{{link2}}{% endautoescape %}</p>
-    <p>{% autoescape off %}{{content2}}{% endautoescape %}</p> 
-  </li>
-  </br>
-  <li>
-    <h3><a target="_blank" href="{{link3}}">{% autoescape off %}{{title3}}{% endautoescape %}</h3>
-             
-    <p class="url"><a>{% autoescape off %}{{link3}}{% endautoescape %}</p>
-    <p>{% autoescape off %}{{content3}}{% endautoescape %}</p> 
-  </li>
-  </br>
-  <li>
-    <h3><a target="_blank" href="{{link4}}">{% autoescape off %}{{title4}}{% endautoescape %}</h3>
-             
-    <p class="url"><a>{% autoescape off %}{{link4}}{% endautoescape %}</p>
-    <p>{% autoescape off %}{{content4}}{% endautoescape %}</p> 
-  </li>
-  </br>
-  <li>
-    <h3><a target="_blank" href="{{link5}}">{% autoescape off %}{{title5}}{% endautoescape %}</h3>
-             
-    <p class="url"><a>{% autoescape off %}{{link5}}{% endautoescape %}</p>
-    <p>{% autoescape off %}{{content5}}{% endautoescape %}</p> 
-  </li>
-  </br>
-  <li>
-    <h3><a target="_blank" href="{{link6}}">{% autoescape off %}{{title6}}{% endautoescape %}</h3>
-             
-    <p class="url"><a>{% autoescape off %}{{link6}}{% endautoescape %}</p>
-    <p>{% autoescape off %}{{content6}}{% endautoescape %}</p> 
-  </li>
-  </br>
-  <li>
-    <h3><a target="_blank" href="{{link7}}">{% autoescape off %}{{title7}}{% endautoescape %}</h3>
-             
-    <p class="url"><a>{% autoescape off %}{{link7}}{% endautoescape %}</p>
-    <p>{% autoescape off %}{{content7}}{% endautoescape %}</p> 
-  </li>
-  </br>
-  <li>
-    <h3><a target="_blank" href="{{link8}}">{% autoescape off %}{{title8}}{% endautoescape %}</h3>
-             
-    <p class="url"><a>{% autoescape off %}{{link8}}{% endautoescape %}</p>
-    <p>{% autoescape off %}{{content8}}{% endautoescape %}</p> 
-  </li>
-
-  <li>
-    <h3><a target="_blank" href="{{link9}}">{% autoescape off %}{{title9}}{% endautoescape %}</h3>
-             
-    <p class="url"><a>{% autoescape off %}{{link9}}{% endautoescape %}</p>
-    <p>{% autoescape off %}{{content9}}{% endautoescape %}</p> 
-  </li>
-  </br>
- </ul>
 </div>
-
 <div>
-  <span class="STYLE5"><a href="/search/?q={{keyword}}&start={{start1}}">{{page1}}</a>
+<ul>
+{% for post in search_data %}
+    <li>
+     <h4><a target="_blank" href="{{post.sd_url}}">{% autoescape off %}{{post.sd_title}}{% endautoescape %}</h4>             
+     <p class="url"><a>{% autoescape off %}{{post.sd_url}}{% endautoescape %}</p>
+     <p>{% autoescape off %}{{post.sd_content}}{% endautoescape %}</p> 
+    </li>
+{% endfor %}
+</ul>
+</div>
+<div align="center">
+<h2>
+  <a href="/search/?q={{keyword}}&start={{start1}}">{{page1}}</a>
   <a href="/search/?q={{keyword}}&start={{start2}}">{{page2}}</a>
   <a href="/search/?q={{keyword}}&start={{start3}}">{{page3}}</a>
   <a href="/search/?q={{keyword}}&start={{start4}}">{{page4}}</a>
@@ -115,7 +41,8 @@
   <a href="/search/?q={{keyword}}&start={{start7}}">{{page7}}</a>
   <a href="/search/?q={{keyword}}&start={{start8}}">{{page8}}</a>
   <a href="/search/?q={{keyword}}&start={{start9}}">{{page9}}</a>
-  <a href="/search/?q={{keyword}}&start={{start10}}">{{page10}}</a></span></div>
-
+  <a href="/search/?q={{keyword}}&start={{start10}}">{{page10}}</a>
+</h2>
+</div>
 </body>
 </html>

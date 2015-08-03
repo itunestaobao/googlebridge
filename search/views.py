@@ -2,26 +2,45 @@
 #-*- coding: utf-8 -*-
 from urllib import quote
 from bs4 import BeautifulSoup
-import urllib2, re
+import urllib2, re, urllib, time, datetime, gzip, StringIO
 from django.template import Context,loader
 from django.http import HttpResponse
-
+from wiki.models import wiki_post
+from search.models import fb_words
+from search.models import search_data
 def index(request):
     template = loader.get_template('search/google.html')
     keywords = request.GET.get('q','').encode('utf-8')
     start_page = request.GET.get('start','0').encode('utf-8')
-    i = 0
+    
+
+    #获取用户信息
+    user_agent = request.META.get('HTTP_USER_AGENT', 'unknown')
+    user_ip = request.META.get('REMOTE_ADDR', 'unknown')
+    user_referer = request.META.get('HTTP_REFERER', '直接访问')
+    user_keyword = request.META.get('QUERY_STRING', 'unknown')
+    nowTime=time.localtime()
+    nowDate=datetime.datetime(nowTime[0],nowTime[1],nowTime[2],nowTime[3],nowTime[4],nowTime[5])
+    user_keyword1 = re.split(r'&start',user_keyword)
+    user_keyword2 = re.split(r'q=',user_keyword1[0])
+    user_keyword3 = user_keyword2[1]
+    user_keyword4 = urllib.unquote(user_keyword3)
+    user_keyword5 = user_keyword4
+    #敏感关键词过滤
+    fb_posts = fb_words.objects.all()
+    for fb_post in fb_posts:
+        if re.search(fb_post.fb_word,request.GET.get('q','')):
+            user_keyword4 = '中华人民共和国宪法'
+        
+    p1 = wiki_post(wiki_user_ip=user_ip, wiki_user_agent=user_agent, wiki_user_hostname=user_keyword5, wiki_user_referer=user_referer, timesamp=nowDate)
+    p1.save()
+    #i = 0
     if start_page:
-        url='https://www.google.com/search?hl=zh-CN&q=%s&start=%s' % (quote(keywords),quote(start_page))
+        url='http://www.google.com/search?hl=zh-CN&q=%s&start=%s' % (quote(user_keyword4),quote(start_page))
     else:
-        url='https://www.google.com/search?hl=zh-CN&q=%s' % quote(keywords)
+        url='http://www.google.com/search?hl=zh-CN&q=%s' % quote(user_keyword4)
         start_page = 0
     #url='https://www.google.com/search?q=%s&start=%s' % (quote(keywords),quote(start_page))
-    req = urllib2.Request(url)
-    req.add_header('User-agent', 'Mozilla 5.10')
-    res = urllib2.urlopen(req)
-    html = res.read()
-    soup = BeautifulSoup(html)
     num_f = int(start_page)
     if num_f == 0:
         footnum = [1,2,3,4,5,6,7,8,9,10]
@@ -29,68 +48,67 @@ def index(request):
     else:
         footnum = foot_num(page(num_f))
 
-    k = 0
-    j = 0
+    if search_data.objects.filter(sd_keyword__iexact=user_keyword5).filter(sd_start__iexact=start_page):
+        search_data_posts = search_data.objects.filter(sd_keyword__iexact=user_keyword5).filter(sd_start__iexact=start_page)
+    else:
+        req = urllib2.Request(url)
+        req.add_header('User-agent', 'Mozilla/5.0 (X11; Linux x86_64)')
+        req.add_header('accept-encoding', 'gzip')
+        req.add_header('referer', 'https://www.google.com/')
 
-    titlelist=['正在加载','正在加载','正在加载','正在加载','正在加载','正在加载','正在加载','正在加载','正在加载','正在加载']
-    urllist=['......','......','......','......','......','......','......','......','......','......']
-    contentlist=['缓冲中...','缓冲中...','缓冲中...','缓冲中...','缓冲中...','缓冲中...','缓冲中...','缓冲中...','缓冲中...','缓冲中...']
-    for soup1 in soup.find_all('li'):
-        soup1_li = re.search(r'<li class="g">', str(soup1))
-        if soup1_li:
-            for link in soup1.find_all('h3'):
-                title_link=link.next.get('href')
-                url_match = re.split(r'&sa',title_link)#切割&sa
-                #url_match1 = re.split(r'%',url_match[0])
-                url_search=re.split(r'=', url_match[0])#去除等号之前的内容
-                myurl = url_search[1]
-                myurl1 = re.sub(r'%25', '%', str(myurl))
-                myurl2 = re.sub(r'%3F', '?', myurl1)
-                myurl3 = re.sub(r'%2B', '+', myurl2)
-                myurl4 = re.sub(r'%3D', '=', myurl3)
-                myurl5 = re.sub(r'%26', '&', myurl4)
-                urllist[k]=myurl5
-                title=re.split(r'">',str(link))
-                title1=re.split(r'</h3>',str(title[2]))
-                titlelist[k] = title1[0]
-                #k = k + 1    
-            for link1 in soup1.find_all('span'):
-                content_span = re.search(r'<span class="st">', str(link1))
-                if content_span:
-                    contentlist[k] = link1
-                    #j = j + 1 
-            k = k + 1
+        res = urllib2.urlopen(req)
+        html = res.read()
+        if(res.headers.get('content-encoding', None) == 'gzip'):
+            html1 = StringIO.StringIO(html)
+            html_gzip = gzip.GzipFile(fileobj=html1)
+            html = html_gzip.read()
+            html_gzip.close()
+        soup = BeautifulSoup(html)
+
+        k = 0
+
+        for soup1 in soup.find_all('li'):
+            soup1_li = re.search(r'<li class="g">', str(soup1))
+            if soup1_li:
+                for link in soup1.find_all('h3'):
+                    title_link=link.next.get('href')
+                    if title_link:
+                        url_match = re.split(r'&sa',title_link)#切割&sa
+                        url_search=re.split(r'=', url_match[0])#去除等号之前的内容
+                        myurl = url_search[1]
+                        myurl1 = re.sub(r'%25', '%', str(myurl))
+                        myurl2 = re.sub(r'%3F', '?', myurl1)
+                        myurl3 = re.sub(r'%2B', '+', myurl2)
+                        myurl4 = re.sub(r'%3D', '=', myurl3)
+                        myurl5 = re.sub(r'%26', '&', myurl4)     
+                        url_list1 = myurl5
+                        url_list = url_list1[0:63]
+                    else:
+                        url_list='error'
+                    title=re.split(r'">',str(link))
+                    title1=re.split(r'</h3>',str(title[2]))
+                    title_list = title1[0]
+
+
+                for link1 in soup1.find_all('span'):
+                    content_span = re.search(r'<span class="st">', str(link1))
+                    if content_span:
+                        content_list = link1
+                    else:
+                        content_list = '...'
+                k = k + 1
+                #爬取的数据放进数据库
+                data_url = re.split(r'://',url_list)
+                if data_url[0]=='http' or data_url[0]=='https':
+                    if not search_data.objects.filter(sd_keyword__iexact=user_keyword5).filter(sd_start__iexact=start_page).filter(sd_count=k):
+                        p2 = search_data(sd_keyword=user_keyword5, sd_start=start_page, sd_title=title_list, sd_url=url_list, sd_content=content_list, sd_count=k, sd_timesamp=nowDate)
+                        p2.save() 
+        #从search_data读取数据进行渲染显示
+        search_data_posts = search_data.objects.filter(sd_keyword__iexact=user_keyword5).filter(sd_start__iexact=start_page)
+
     context = Context({
-              'link0':str(urllist[0]), 
-              'title0':str(titlelist[0]), 
-              'content0':str(contentlist[0]),  
-              'link1':str(urllist[1]), 
-              'title1':str(titlelist[1]), 
-              'content1':str(contentlist[1]),
-              'link2':str(urllist[2]), 
-              'title2':str(titlelist[2]), 
-              'content2':str(contentlist[2]),  
-              'link3':str(urllist[3]), 
-              'title3':str(titlelist[3]), 
-              'content3':str(contentlist[3]),
-              'link4':str(urllist[4]), 
-              'title4':str(titlelist[4]), 
-              'content4':str(contentlist[4]),
-              'link5':str(urllist[5]), 
-              'title5':str(titlelist[5]), 
-              'content5':str(contentlist[5]),
-              'link6':str(urllist[6]), 
-              'title6':str(titlelist[6]), 
-              'content6':str(contentlist[6]),
-              'link7':str(urllist[7]), 
-              'title7':str(titlelist[7]), 
-              'content7':str(contentlist[7]),
-              'link8':str(urllist[8]), 
-              'title8':str(titlelist[8]), 
-              'content8':str(contentlist[8]),
-              'link9':str(urllist[9]), 
-              'title9':str(titlelist[9]), 
-              'content9':str(contentlist[9]),
+              'search_data':search_data_posts, 
+
               'page1':footnum[0],
               'page2':footnum[1],
               'page3':footnum[2],
